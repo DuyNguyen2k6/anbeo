@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chúc mừng sinh nhật Thiên Ân!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+    .balloons {
+      font-size: 48px;
+      animation: bounce 1.5s infinite alternate;
+    }
+    @keyframes bounce {
+      to { transform: translateY(-20px);}
+    }
+    h1 {
+      font-size: 3rem;
+      margin: 20px 0 10px 0;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 8px #ff4e50a0;
+    }
+    h2 {
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 30px;
+    }
+    .message {
+      background: rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 24px 36px;
+      margin: 0 12px 30px 12px;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 20px #ff4e5022;
+      display: inline-block;
+      max-width: 600px;
+    }
+    .cake {
+      font-size: 80px;
+      animation: shake 1s infinite alternate;
+    }
+    @keyframes shake {
+      to { transform: rotate(-4deg);}
+    }
+    .confetti {
+      position: absolute;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti"></canvas>
+  <div class="balloons"></div>
+    <div class="balloons">🍻🍻🍻</div>
+
+  <h1>Chúc mừng sinh nhật<br>Thiên Ân!</h1>
+   <img src="thienan.jpg" alt="Ảnh Thiên Ân" style="max-width: 260px; border-radius: 24px; margin: 20px auto; box-shadow: 0 4px 16px #fff8;">
+  <h2>Chúc bạn tuổi mới thật nhiều niềm vui, hạnh phúc và thành công! 🎉</h2>
+  <div class="message">
+Chúc mừng sinh nhật Ân Béo!
+
+Tuổi mới “máu” hơn tuổi cũ, trai đẹp đầy nhà, tiền rủng rỉnh, niềm vui “thăng hoa”, cuộc đời chỉ có lên đỉnh chứ không tụt mood!
+
+Chúc Ân Béo luôn giữ độ “lầy”, luôn tươi như gái 18, dâm đúng lúc – ngoan đúng nơi!
+
+Quẩy hết mình, vui hết cỡ, yêu hết ga nhé!
+
+Happy Birthday, Ân Béo cực phẩm! 🎂🍻
+
+🎉🎂🍻<br>
+    <b>Happy Birthday!</b>
+  </div>
+  <div class="cake">🎂</div>
+  <div class="balloons">🍻🍻🍻</div>
+  <script>
+    // Confetti animation
+    const canvas = document.querySelector('.confetti');
+    const ctx = canvas.getContext('2d');
+    let W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+
+    let confetti = [];
+    for(let i=0; i<120; i++){
+      confetti.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: Math.random()*6+4,
+        d: Math.random()*90,
+        color: `hsl(${Math.random()*360},100%,65%)`,
+        tilt: Math.random()*10-10
+      });
+    }
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=0; i<confetti.length; i++){
+        let c = confetti[i];
+        ctx.beginPath();
+        ctx.ellipse(c.x, c.y, c.r, c.r*0.6, c.tilt, 0, 2*Math.PI);
+        ctx.fillStyle = c.color;
+        ctx.fill();
+      }
+      update();
+    }
+    function update(){
+      for(let i=0; i<confetti.length; i++){
+        let c = confetti[i];
+        c.y += Math.cos(c.d) + 1 + c.r/2;
+        c.x += Math.sin(c.d);
+        c.d += 0.01;
+        if(c.y > H){
+          c.x = Math.random()*W;
+          c.y = -10;
+        }
+      }
+    }
+    setInterval(draw, 20);
+    window.onresize = () => {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W;
+      canvas.height = H;
+    }
+  </script>
+</body>
+</html>
+<script>
+function playHappyBirthday() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  // Các nốt nhạc Happy Birthday, mỗi nốt: [tần số Hz, thời lượng ms]
+  const notes = [
+    [264,300],[264,150],[297,450],[264,450],[352,450],[330,800],
+    [264,300],[264,150],[297,450],[264,450],[396,450],[352,800],
+    [264,300],[264,150],[528,450],[440,450],[352,300],[330,300],[297,700],
+    [466,300],[466,150],[440,450],[352,450],[396,450],[352,800]
+  ];
+  let now = ctx.currentTime;
+  for (let i = 0; i < notes.length; i++) {
+    let [freq, dur] = notes[i];
+    let osc = ctx.createOscillator();
+    let gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    // Âm lượng to hơn
+    gain.gain.setValueAtTime(0.6, now);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + dur / 1000);
+    gain.gain.linearRampToValueAtTime(0, now + dur / 1000);
+    now += dur / 1000 + 0.04;
+  }
+  // Khi xong sẽ tự lặp lại
+  setTimeout(() => {
+    ctx.close();
+    playHappyBirthday();
+  }, notes.reduce((acc, cur) => acc + cur[1] + 40, 0)); // tổng thời lượng
+}
+// Tự động phát khi vào trang
+window.addEventListener('DOMContentLoaded', function() {
+  playHappyBirthday();
+});
+</script>
